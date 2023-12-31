@@ -1,0 +1,54 @@
+version: "3"
+services:
+  web:
+    image: react-client
+    deploy:
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+  server:
+    image: url-mapper-server
+    deploy:
+      restart_policy:
+          condition: on-failure
+    ports:
+      - "8000:8000"
+    networks:
+      - webnet
+  redis-master:
+    image: redis
+    ports:
+      - "6379:6379"
+    deploy:
+      restart_policy:
+        condition: on-failure
+    command: redis-server --maxmemory 1gb --maxmemory-policy allkeys-lru
+    networks:
+      - webnet
+  redis-slave:
+    image: redis
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "6380:6379"
+    command: redis-server --replicaof redis-master 6379
+    networks:
+      - webnet
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+networks:
+  webnet:
