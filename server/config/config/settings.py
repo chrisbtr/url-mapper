@@ -11,16 +11,21 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4ycm!ueh+%0$^&*@*1e38jribi&(n1zc_%vozqc0g%ky%vp+xi'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,11 +47,8 @@ INSTALLED_APPS = [
     'mapperApp',
 ]
 
-# CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
-
-
+CORS_ALLOWED_ORIGINS = [env.str('REACT_HOST'), env.str('DJANGO_HOST')]
 ALLOWED_HOSTS=['*']
-CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -93,7 +95,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://172.23.62.213:6379/",
+        "LOCATION": env.str('REDIS_LOCATION'),
         "KEY_PREFIX": "mapping",
         "TIMEOUT": 60 * 15, 
     }
