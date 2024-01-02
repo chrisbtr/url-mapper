@@ -28,7 +28,13 @@ function App() {
     console.log(event)
     const data: UrlMapping = {fullURL: url, urlKey: urlKey}
     console.log(data)
-    fetch('http://172.23.62.213:8000/api/', {
+
+    const endpoint = process.env.REACT_APP_SERVER_ENDPOINT
+    if (endpoint === undefined) {
+      return;
+    }
+    
+    fetch(endpoint, {
       headers: {
         "content-type": "application/json",
       },
@@ -44,7 +50,12 @@ function App() {
   }
 
   React.useEffect(() => {
-    fetch('http://172.23.62.213:8000/api/', {
+    const endpoint = process.env.REACT_APP_SERVER_ENDPOINT
+    if (endpoint === undefined) {
+      return;
+    }
+
+    fetch(endpoint, {
       headers: {
         "content-type": "application/json",
       },

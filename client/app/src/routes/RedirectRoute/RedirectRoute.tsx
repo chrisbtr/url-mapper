@@ -14,7 +14,12 @@ const RedirectRoute: React.FC = () => {
   const { urlKey } = useParams<RedirectRouteParams>();
 
   React.useEffect(() => {
-    fetch(`http://172.23.62.213:8000/api/${urlKey}`, {
+    const endpoint = process.env.REACT_APP_SERVER_ENDPOINT
+    if (endpoint === undefined) {
+      return;
+    }
+
+    fetch(`${endpoint}${urlKey}`, {
       headers: {
         "content-type": "application/json",
       },
@@ -25,7 +30,6 @@ const RedirectRoute: React.FC = () => {
       if (res.status === 200) {
         res.json().then((res: UrlMapping) => {
           console.log(res)
-          // setFullUrl(res.fullURL)
           if (res.fullURL !== urlKey) { 
             window.location.replace(res.fullURL)
           }
