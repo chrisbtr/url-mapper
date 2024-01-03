@@ -1,10 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
-
-export type UrlMapping = { 
-  fullURL: string,
-  urlKey: string
-}
+import urlMappingsApi from '../../api/urlMappings';
 
 type RedirectRouteParams = {
   urlKey: string;
@@ -14,30 +10,18 @@ const RedirectRoute: React.FC = () => {
   const { urlKey } = useParams<RedirectRouteParams>();
 
   React.useEffect(() => {
-    const endpoint = process.env.REACT_APP_SERVER_ENDPOINT
-    if (endpoint === undefined) {
+    if (urlKey === undefined) {
       return;
     }
 
-    fetch(`${endpoint}${urlKey}`, {
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "GET",
-      mode: "cors",
-    }).then(res => {
+    urlMappingsApi.get(urlKey).then(res => {
       console.log(res)
-      if (res.status === 200) {
-        res.json().then((res: UrlMapping) => {
-          console.log(res)
-          if (res.fullURL !== urlKey) { 
-            window.location.replace(res.fullURL)
-          }
-        })
+      if (res.status === 200 && res.data.fullURL !== urlKey) {
+        window.location.replace(res.data.fullURL)
       }
     }).catch(err => {
       console.log(err)
-    })
+    });
   }, [])
 
   return (

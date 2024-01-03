@@ -1,14 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import CreateMappingForm from "./components/CreateMappingForm/CreateMappingForm"
 import TopBar from "./components/TopBar/TopBar"
-
-
-type UrlMapping = { 
-  fullURL: string,
-  urlKey: string
-}
+import urlMappingsApi, { UrlMapping } from './api/urlMappings';
 
 function App() {
   const [url, setUrl] = React.useState('')
@@ -29,46 +23,20 @@ function App() {
     const data: UrlMapping = {fullURL: url, urlKey: urlKey}
     console.log(data)
 
-    const endpoint = process.env.REACT_APP_SERVER_ENDPOINT
-    if (endpoint === undefined) {
-      return;
-    }
-    
-    fetch(endpoint, {
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(data)
-    }).then(res => {
+    urlMappingsApi.post(data).then(res => {
       console.log(res)
       setMappedUrls([...mappedUrls, data])
     }).catch(err => {
       console.log(err)
-    })
+    });
   }
 
   React.useEffect(() => {
-    const endpoint = process.env.REACT_APP_SERVER_ENDPOINT
-    if (endpoint === undefined) {
-      return;
-    }
-
-    fetch(endpoint, {
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "GET",
-      mode: "cors",
-    }).then(res => {
-      console.log(res)
-      res.json().then((res: UrlMapping[]) => {
-        setMappedUrls([...res])
-      })
+    urlMappingsApi.getAll().then(res => {
+      setMappedUrls([...res.data]);
     }).catch(err => {
       console.log(err)
-    })
+    });
     
   }, [])
 
