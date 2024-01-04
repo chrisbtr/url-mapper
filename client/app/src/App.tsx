@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import CreateMappingForm from "./components/CreateMappingForm/CreateMappingForm"
-import TopBar from "./components/TopBar/TopBar"
 import urlMappingsApi, { UrlMapping } from './api/urlMappings';
 
 function App() {
@@ -42,14 +41,11 @@ function App() {
 
   return (
     <div className="App">
-      
-      <TopBar />
       <CreateMappingForm 
         paperFormProps={{onSubmit: handleSubmit}} 
         urlTextFieldProps={{onChange: handleUrlInputChange, value: url}} 
         urlKeyTextFieldProps={{onChange: handleUrlKeyInputChange, value: urlKey}}  
       />
-      
       <h2>All Mappings:</h2>
       <div>
         {mappedUrls.map(mappedUrl => <div key={mappedUrl.urlKey}><a href={mappedUrl.fullURL}>{mappedUrl.urlKey}</a></div>)}

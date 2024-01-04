@@ -4,6 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import TopBar from './components/TopBar/TopBar';
 
 import App from './App';
 import RedirectRoute from './routes/RedirectRoute/RedirectRoute';
@@ -30,7 +31,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
-      {/* <App /> */}
+      <TopBar />
       <RouterProvider router={router} />
     </StyledEngineProvider>
   </React.StrictMode>
