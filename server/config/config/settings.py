@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'mapperApp',
 ]
 
-CORS_ALLOWED_ORIGINS = [env.str('REACT_HOST'), env.str('DJANGO_HOST')]
+CORS_ALLOWED_ORIGINS = env.list('ALLOWED_ORIGINS')
 ALLOWED_HOSTS=['*']
 
 MIDDLEWARE = [
