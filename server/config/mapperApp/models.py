@@ -7,5 +7,5 @@ class User(AbstractUser):
 
 class URLMapping(models.Model):
   # user = models.ForeignKey("User", on_delete=models.CASCADE)
-  urlKey = models.TextField(max_length=2048, unique=True, primary_key=True)
-  fullURL = models.TextField(max_length=2048, blank=False, unique=False)
+  urlKey = models.TextField(max_length=200, unique=True, primary_key=True)
+  fullURL = models.URLField(max_length=200)
