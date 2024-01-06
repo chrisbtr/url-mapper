@@ -5,8 +5,12 @@ export type UrlMapping = {
   urlKey: string,
 };
 
+export type UrlMappingGetAllParams = { 
+  search?: string,
+};
+
 const urlMappingsApi = {
-  getAll: () => entryPoint.get<UrlMapping[]>(""),
+  getAll: (params?: UrlMappingGetAllParams) => entryPoint.get<UrlMapping[]>("", { params: params }),
   get: (key: string) => entryPoint.get<UrlMapping>(key),
   post: (data: UrlMapping) => entryPoint.post("", data),
 };
