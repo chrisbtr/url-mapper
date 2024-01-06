@@ -4,13 +4,12 @@ import Paper, { PaperProps } from '@mui/material/Paper';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 
 export interface CreateMappingFormProps {
-  urlTextFieldProps:  TextFieldProps,
-  urlKeyTextFieldProps: TextFieldProps,
-  paperFormProps: PaperProps<'form'>,
+  urlTextFieldProps?:  TextFieldProps,
+  urlKeyTextFieldProps?: TextFieldProps,
+  paperFormProps?: PaperProps<'form'>,
 }
 
 const CreateMappingForm: React.FC<CreateMappingFormProps> = ({urlTextFieldProps, urlKeyTextFieldProps, paperFormProps}) => {
-
   return (
     <Paper 
       component="form" 
