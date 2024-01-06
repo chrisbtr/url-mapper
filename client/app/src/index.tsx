@@ -5,9 +5,9 @@ import reportWebVitals from './reportWebVitals';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TopBar from './components/TopBar/TopBar';
-
 import App from './App';
 import RedirectRoute from './routes/RedirectRoute/RedirectRoute';
+import AllMappingsRoute from './routes/AllMappingsRoute/AllMappingsRoute';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -20,7 +20,11 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/:urlKey",
+    path: "/mappings",
+    element: <AllMappingsRoute />
+  },
+  {
+    path: "/m/:urlKey",
     element: <RedirectRoute />,
   },
 ]);

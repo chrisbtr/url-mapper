@@ -50,7 +50,7 @@ const TopBar: React.FC = () => {
             </Button>
             <Button
               key='AllMappings'
-              onClick={handleCloseNavMenu}
+              href="/mappings"
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
               All Mappings
