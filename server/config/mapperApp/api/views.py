@@ -6,10 +6,12 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from ..models import URLMapping
 from .serializers import URLMappingSerializer
+from .paginations import URLMappingPagination
 
 class URLMappingViewSet(ModelViewSet):
   queryset = URLMapping.objects.all()
   serializer_class = URLMappingSerializer
+  pagination_class = URLMappingPagination
   filter_backends = [filters.SearchFilter]
   search_fields = ['urlKey', 'fullURL']
 
