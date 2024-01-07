@@ -54,7 +54,7 @@ const AllMappingsRoute: React.FC = () => {
 
   const handleSearchClear = () => {
     setSearchQuery("");
-    getFilteredMappings();
+    getFilteredMappings({search: ""});
   };
 
   const handleKeyPress: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
