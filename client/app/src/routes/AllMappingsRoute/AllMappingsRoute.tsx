@@ -5,25 +5,47 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
+import Pagination, { PaginationProps } from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
+// import { useSearchParams } from 'react-router-dom';
 import urlMappingsApi, { UrlMapping, UrlMappingGetAllParams } from '../../api/urlMappings';
 import URLMapping from '../../components/URLMapping/URLMapping';
 
 const AllMappingsRoute: React.FC = () => {
   const [mappedUrls, setMappedUrls] = React.useState<UrlMapping[]>([]);
+  const [mappedUrlCount, setMappedUrlCount] = React.useState(0);
+  
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [currentSearchQuery, setCurrentSearchQuery] = React.useState("");
+
+  const [pageCount, setPageCount] = React.useState(1);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(5);
+
+  // const [ searchParams, setSearchParams ] = useSearchParams();
 
   const isSearchQueryEmpty = () => searchQuery === "";
 
   const getFilteredMappings = (params: UrlMappingGetAllParams = {}) => {
-    urlMappingsApi.getAll(params).then(res => {
-      setMappedUrls([...res.data]);
+    return urlMappingsApi.getAll({...params, page_size: pageSize}).then(res => {
+      setMappedUrls([...res.data.results]);
+      setCurrentSearchQuery(params.search ?? currentSearchQuery);
+      setCurrentPage(params.page ?? currentPage);
+
+      setMappedUrlCount(res.data.count);
+
+      // searchParams.set("search", params.search ?? currentSearchQuery);
+      // setSearchParams(searchParams)
     }).catch(err => {
       console.log(err);
     });
   }
+
+  const handlePaginationChange: PaginationProps['onChange'] = (_, page) => {
+    getFilteredMappings({search: currentSearchQuery, page})
+  } 
 
   const handleSearchChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
     setSearchQuery(event.target.value);
@@ -31,11 +53,6 @@ const AllMappingsRoute: React.FC = () => {
 
   const handleSearchClear = () => {
     setSearchQuery("");
-    // urlMappingsApi.getAll().then(res => {
-    //   setMappedUrls([...res.data]);
-    // }).catch(err => {
-    //   console.log(err);
-    // });
     getFilteredMappings();
   };
 
@@ -46,21 +63,17 @@ const AllMappingsRoute: React.FC = () => {
     }
 
     console.log(`Searching for "${normalizedSearchQuery}"...`)
-    // urlMappingsApi.getAll({search: normalizedSearchQuery}).then(res => {
-    //   setMappedUrls([...res.data]);
-    // }).catch(err => {
-    //   console.log(err);
-    // });
     getFilteredMappings({search: normalizedSearchQuery})
   }
 
   React.useEffect(() => {
-    urlMappingsApi.getAll().then(res => {
-      setMappedUrls([...res.data]);
-    }).catch(err => {
-      console.log(err);
-    });
+    getFilteredMappings();
   }, []);
+
+
+  React.useEffect(() => {
+    setPageCount(Math.ceil(mappedUrlCount/pageSize));
+  }, [mappedUrlCount, pageSize]);
 
   return (
     <>
@@ -78,7 +91,7 @@ const AllMappingsRoute: React.FC = () => {
 
       <Box sx={{m: 2, mx: 24}}>
       <TextField 
-        fullWidth={true}
+        fullWidth
         size="small"
         onChange={handleSearchChange}
         onKeyDown={handleKeyPress}
@@ -113,6 +126,8 @@ const AllMappingsRoute: React.FC = () => {
           {mappedUrls.map((mappedUrl, index) => <URLMapping key={`url-mapping-${index}`} urlMapping={mappedUrl}/>)}
         </Box>
       </Grid>
+      <Divider orientation='horizontal' />
+      <Pagination sx={{justifyContent: 'center', display: 'flex', my: 1 }} count={pageCount} onChange={handlePaginationChange} />
     </>
   );
 };
