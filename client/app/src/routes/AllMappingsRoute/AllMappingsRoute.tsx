@@ -9,22 +9,22 @@ import Pagination, { PaginationProps } from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-// import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import urlMappingsApi, { UrlMapping, UrlMappingGetAllParams } from '../../api/urlMappings';
 import URLMapping from '../../components/URLMapping/URLMapping';
 
 const AllMappingsRoute: React.FC = () => {
+  const [ searchParams, setSearchParams ] = useSearchParams();
+
   const [mappedUrls, setMappedUrls] = React.useState<UrlMapping[]>([]);
   const [mappedUrlCount, setMappedUrlCount] = React.useState(0);
   
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [currentSearchQuery, setCurrentSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState(searchParams.get("search") ?? "");
+  const [currentSearchQuery, setCurrentSearchQuery] = React.useState(searchParams.get("search") ?? "");
 
   const [pageCount, setPageCount] = React.useState(1);
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const [currentPage, setCurrentPage] = React.useState(isNaN(Number.parseInt(searchParams.get("page") ?? "1")) ? 1 : Number.parseInt(searchParams.get("page") ?? "1"));
   const [pageSize, setPageSize] = React.useState(5);
-
-  // const [ searchParams, setSearchParams ] = useSearchParams();
 
   const isSearchQueryEmpty = () => searchQuery === "";
 
@@ -33,11 +33,12 @@ const AllMappingsRoute: React.FC = () => {
       setMappedUrls([...res.data.results]);
       setCurrentSearchQuery(params.search ?? currentSearchQuery);
       setCurrentPage(params.page ?? currentPage);
-
       setMappedUrlCount(res.data.count);
 
-      // searchParams.set("search", params.search ?? currentSearchQuery);
-      // setSearchParams(searchParams)
+      searchParams.set("page", String(params.page ?? currentPage));
+      searchParams.set("search", params.search ?? currentSearchQuery);
+
+      setSearchParams(searchParams)
     }).catch(err => {
       console.log(err);
     });
@@ -67,7 +68,7 @@ const AllMappingsRoute: React.FC = () => {
   }
 
   React.useEffect(() => {
-    getFilteredMappings();
+    getFilteredMappings({page: currentPage, search: currentSearchQuery});
   }, []);
 
 
