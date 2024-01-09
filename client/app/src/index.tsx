@@ -1,42 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import { StyledEngineProvider } from '@mui/material/styles';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TopBar from './components/TopBar/TopBar';
-import App from './App';
-import RedirectRoute from './routes/RedirectRoute/RedirectRoute';
-import AllMappingsRoute from './routes/AllMappingsRoute/AllMappingsRoute';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import { StyledEngineProvider } from "@mui/material/styles";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import TopBar from "./components/TopBar/TopBar";
+import App from "./App";
+import RedirectRoute from "./routes/RedirectRoute/RedirectRoute";
+import AllMappingsRoute from "./routes/AllMappingsRoute/AllMappingsRoute";
+import CreateMappingRoute from "./routes/CreateMappingRoute/CreateMappingRoute";
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "/mappings",
-    element: <AllMappingsRoute />
-  },
-  {
-    path: "/m/:urlKey",
-    element: <RedirectRoute />,
-  },
-]);
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
-      <TopBar />
-      <RouterProvider router={router} />
+      <BrowserRouter>
+        <TopBar />
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/mappings" element={<AllMappingsRoute />} />
+          <Route path="/create" element={<CreateMappingRoute />} />
+          <Route path="/m/:urlKey" element={<RedirectRoute />} />
+        </Routes>
+      </BrowserRouter>
     </StyledEngineProvider>
   </React.StrictMode>
 );

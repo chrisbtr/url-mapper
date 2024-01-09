@@ -1,18 +1,13 @@
-import React from 'react'
-import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import React from "react";
+import AppBar from "@mui/material/AppBar";
+import Container from "@mui/material/Container";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import { Link as RouterLink } from "react-router-dom";
 
 const TopBar: React.FC = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -20,38 +15,39 @@ const TopBar: React.FC = () => {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
               fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             URL Mapper
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
-              key='Account'
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
+              key="Account"
+              sx={{ my: 2, color: "white", display: "block" }}
             >
               Account
             </Button>
             <Button
-              key='CreateMapping'
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
+              key="CreateMapping"
+              component={RouterLink}
+              to="/create"
+              sx={{ my: 2, color: "white", display: "block" }}
             >
               Create Mapping
             </Button>
             <Button
-              key='AllMappings'
-              href="/mappings"
-              sx={{ my: 2, color: 'white', display: 'block' }}
+              key="AllMappings"
+              component={RouterLink}
+              to="/mappings"
+              sx={{ my: 2, color: "white", display: "block" }}
             >
               All Mappings
             </Button>
@@ -59,7 +55,7 @@ const TopBar: React.FC = () => {
         </Toolbar>
       </Container>
     </AppBar>
-  )
-}
+  );
+};
 
-export default TopBar
+export default TopBar;
