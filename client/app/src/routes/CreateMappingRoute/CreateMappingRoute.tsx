@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import CreateMappingForm from "../../components/CreateMappingForm/CreateMappingForm";
 import urlMappingsApi, { UrlMapping } from "../../api/urlMappings";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 
 const CreateMappingRoute: React.FC = () => {
   const [url, setUrl] = React.useState("");
@@ -42,13 +43,14 @@ const CreateMappingRoute: React.FC = () => {
         variant="h3"
         noWrap
         sx={{
-          mt: 2,
+          my: 2,
           fontWeight: 500,
           textAlign: "center",
         }}
       >
         Create Mapping
       </Typography>
+      <Divider />
       <Box sx={{ textAlign: "center" }}>
         <CreateMappingForm
           paperFormProps={{ onSubmit: handleSubmit }}
