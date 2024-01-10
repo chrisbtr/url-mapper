@@ -109,11 +109,11 @@ const CreateMappingRoute: React.FC = () => {
             value: url,
             error: urlErrorMessages === null ? false : true,
             helperText: (
-              <div>
+              <>
                 {urlErrorMessages?.map((errorMessage) => (
-                  <div>{errorMessage}</div>
+                  <>{errorMessage}</>
                 ))}
-              </div>
+              </>
             ),
           }}
           urlKeyTextFieldProps={{
@@ -121,11 +121,11 @@ const CreateMappingRoute: React.FC = () => {
             value: urlKey,
             error: urlKeyErrorMessages === null ? false : true,
             helperText: (
-              <div>
+              <>
                 {urlKeyErrorMessages?.map((errorMessage) => (
-                  <div>{errorMessage}</div>
+                  <>{errorMessage}</>
                 ))}
-              </div>
+              </>
             ),
           }}
         />
