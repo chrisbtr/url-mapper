@@ -67,6 +67,7 @@ const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
         sx={{ display: "flex", justifyContent: "center" }}
       >
         <Box
+          data-testid={`url-key${urlKeyTextFieldProps?.error ? "-error" : ""}`}
           color={
             urlKeyTextFieldProps?.error
               ? (theme) => theme.palette.error.main
@@ -77,6 +78,7 @@ const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
         </Box>
         <ArrowForwardIcon />
         <Box
+          data-testid={`full-url${urlTextFieldProps?.error ? "-error" : ""}`}
           color={
             urlTextFieldProps?.error ? (theme) => theme.palette.error.main : ""
           }
