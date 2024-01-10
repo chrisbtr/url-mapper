@@ -9,8 +9,13 @@ import { Link as RouterLink } from "react-router-dom";
 
 const TopBar: React.FC = () => {
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar
+      position="static"
+      variant="outlined"
+      color="secondary"
+      elevation={0}
+    >
+      <Container maxWidth="xl" sx={{ mx: 4 }}>
         <Toolbar disableGutters>
           <Typography
             variant="h6"
@@ -29,17 +34,14 @@ const TopBar: React.FC = () => {
             URL Mapper
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              key="Account"
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
+            <Button key="Account" sx={{ my: 2, display: "block" }}>
               Account
             </Button>
             <Button
               key="CreateMapping"
               component={RouterLink}
               to="/create"
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ my: 2, display: "block" }}
             >
               Create Mapping
             </Button>
@@ -47,7 +49,7 @@ const TopBar: React.FC = () => {
               key="AllMappings"
               component={RouterLink}
               to="/mappings"
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ my: 2, display: "block" }}
             >
               All Mappings
             </Button>

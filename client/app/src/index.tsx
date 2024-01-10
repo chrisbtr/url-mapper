@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { StyledEngineProvider } from "@mui/material/styles";
+import {
+  StyledEngineProvider,
+  ThemeProvider,
+  CssBaseline,
+} from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TopBar from "./components/TopBar/TopBar";
 import App from "./App";
+import theme from "./theme";
 import RedirectRoute from "./routes/RedirectRoute/RedirectRoute";
 import AllMappingsRoute from "./routes/AllMappingsRoute/AllMappingsRoute";
 import CreateMappingRoute from "./routes/CreateMappingRoute/CreateMappingRoute";
@@ -22,15 +26,18 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
-      <BrowserRouter>
-        <TopBar />
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/mappings" element={<AllMappingsRoute />} />
-          <Route path="/create" element={<CreateMappingRoute />} />
-          <Route path="/m/:urlKey" element={<RedirectRoute />} />
-        </Routes>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <TopBar />
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/mappings" element={<AllMappingsRoute />} />
+            <Route path="/create" element={<CreateMappingRoute />} />
+            <Route path="/m/:urlKey" element={<RedirectRoute />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </StyledEngineProvider>
   </React.StrictMode>
 );
