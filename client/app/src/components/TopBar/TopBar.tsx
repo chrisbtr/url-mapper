@@ -18,6 +18,7 @@ const TopBar: React.FC = () => {
       <Container maxWidth="xl" sx={{ mx: 4 }}>
         <Toolbar disableGutters>
           <Typography
+            data-testid="nav-link-home"
             variant="h6"
             noWrap
             component={RouterLink}
@@ -34,10 +35,15 @@ const TopBar: React.FC = () => {
             URL Mapper
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button key="Account" sx={{ my: 2, display: "block" }}>
+            <Button
+              data-testid="nav-link-account"
+              key="Account"
+              sx={{ my: 2, display: "block" }}
+            >
               Account
             </Button>
             <Button
+              data-testid="nav-link-create"
               key="CreateMapping"
               component={RouterLink}
               to="/create"
@@ -46,6 +52,7 @@ const TopBar: React.FC = () => {
               Create Mapping
             </Button>
             <Button
+              data-testid="nav-link-mappings"
               key="AllMappings"
               component={RouterLink}
               to="/mappings"
