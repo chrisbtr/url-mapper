@@ -7,6 +7,9 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { Link as RouterLink } from "react-router-dom";
 
+/**
+ * Top Navigation AppBar.
+ */
 const TopBar: React.FC = () => {
   return (
     <AppBar

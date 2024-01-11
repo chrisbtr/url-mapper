@@ -13,6 +13,14 @@ export interface CreateMappingFormProps {
   paperFormProps?: PaperProps<"form">;
 }
 
+/**
+ * A form used for creating new URL mappings.
+ *
+ * @param props.urlTextFieldProps The URL that the shortened URL will map to.
+ * @param props.urlKeyTextFieldProps The key used in the shortened URL.
+ * @param props.paperFormProps MUI paper props.
+ *
+ */
 const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
   urlTextFieldProps,
   urlKeyTextFieldProps,

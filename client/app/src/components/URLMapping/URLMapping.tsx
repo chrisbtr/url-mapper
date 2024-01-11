@@ -10,6 +10,12 @@ export type URLMappingProps = {
   paperProps?: PaperProps;
 };
 
+/**
+ * A card that displays a URL mapping. 
+ * 
+ * @param props.urlMapping An object with the full URL and shortened URL key. 
+ * @param props.paperProps MUI Paper Props. 
+ */
 const URLMapping: React.FC<URLMappingProps> = ({ urlMapping, paperProps }) => {
   return (
     <Paper {...paperProps} sx={{ textAlign: "center", p: 2, mx: 24 }}>
