@@ -5,12 +5,26 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, To } from "react-router-dom";
+
+export type NavBarOption = {
+  key?: React.Key;
+  to: To;
+  label: string;
+};
+
+export type TopBarProps = {
+  rootNav: NavBarOption;
+  navBarOptions?: NavBarOption[];
+};
 
 /**
  * Top Navigation AppBar.
+ *
+ * @param props.rootNav `NavBarOption` for the left component on the TopBar
+ * @param props.navBarOptions A list of `NavBarOption` Objects used to create the navigation buttons
  */
-const TopBar: React.FC = () => {
+const TopBar: React.FC<TopBarProps> = ({ rootNav, navBarOptions = [] }) => {
   return (
     <AppBar
       position="static"
@@ -22,10 +36,11 @@ const TopBar: React.FC = () => {
         <Toolbar disableGutters>
           <Typography
             data-testid="nav-link-home"
+            key={rootNav.key}
             variant="h6"
             noWrap
             component={RouterLink}
-            to="/"
+            to={rootNav.to}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -35,34 +50,19 @@ const TopBar: React.FC = () => {
               textDecoration: "none",
             }}
           >
-            URL Mapper
+            {rootNav.label}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              data-testid="nav-link-account"
-              key="Account"
-              sx={{ my: 2, display: "block" }}
-            >
-              Account
-            </Button>
-            <Button
-              data-testid="nav-link-create"
-              key="CreateMapping"
-              component={RouterLink}
-              to="/create"
-              sx={{ my: 2, display: "block" }}
-            >
-              Create Mapping
-            </Button>
-            <Button
-              data-testid="nav-link-mappings"
-              key="AllMappings"
-              component={RouterLink}
-              to="/mappings"
-              sx={{ my: 2, display: "block" }}
-            >
-              All Mappings
-            </Button>
+            {navBarOptions.map(({ key, label, to }) => (
+              <Button
+                key={key}
+                component={RouterLink}
+                to={to}
+                sx={{ my: 2, display: "block" }}
+              >
+                {label}
+              </Button>
+            ))}
           </Box>
         </Toolbar>
       </Container>

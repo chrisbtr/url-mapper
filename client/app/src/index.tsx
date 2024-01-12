@@ -6,8 +6,8 @@ import {
   ThemeProvider,
   CssBaseline,
 } from "@mui/material";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TopBar from "./components/TopBar/TopBar";
+import { BrowserRouter, Routes, Route, RouteProps } from "react-router-dom";
+import TopBar, { NavBarOption } from "./components/TopBar/TopBar";
 import App from "./App";
 import theme from "./theme";
 import RedirectRoute from "./routes/RedirectRoute/RedirectRoute";
@@ -19,6 +19,33 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
+const navRouteProps: Record<string, RouteProps> = {
+  "URL Mapper": {
+    path: "/",
+    element: <App />,
+  },
+  "Create Mapping": {
+    path: "/create",
+    element: <CreateMappingRoute />,
+  },
+  "All Mappings": {
+    path: "/mappings",
+    element: <AllMappingsRoute />,
+  },
+};
+
+const routePropToNavBarOption = (
+  navRoutes: Record<string, RouteProps>
+): NavBarOption[] => {
+  return Object.keys(navRoutes).map((label) => ({
+    key: `navBar-${label.trim()}`,
+    to: navRoutes[label].path ?? "",
+    label: label,
+  }));
+};
+
+const [rootNav, ...navBarOptions] = routePropToNavBarOption(navRouteProps);
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -29,11 +56,11 @@ root.render(
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
-          <TopBar />
+          <TopBar rootNav={rootNav} navBarOptions={navBarOptions} />
           <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/mappings" element={<AllMappingsRoute />} />
-            <Route path="/create" element={<CreateMappingRoute />} />
+            {Object.keys(navRouteProps).map((label) => (
+              <Route key={`route-${label.trim()}`} {...navRouteProps[label]} />
+            ))}
             <Route path="/m/:urlKey" element={<RedirectRoute />} />
           </Routes>
         </BrowserRouter>
