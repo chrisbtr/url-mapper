@@ -2,51 +2,86 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
-import TopBar from "./TopBar";
+import { faker } from "@faker-js/faker";
+import TopBar, { TopBarProps, NavBarOption } from "./TopBar";
 
-const renderWithRouter = (ui: React.ReactElement, { route = "/" } = {}) => {
+const renderWithRouter = (
+  { rootNav, navBarOptions, ...props }: Partial<TopBarProps> = {},
+  { route = "/" } = {}
+) => {
   window.history.pushState({}, "Test page", route);
+
+  const defaultRootNav: NavBarOption = {
+    key: faker.string.uuid(),
+    label: faker.string.alpha(10),
+    to: `/${faker.string.alpha(10)}`,
+  };
+
+  const navBarElmCount = faker.number.int({ min: 0, max: 3 });
+  const defaultNavBarOptions: NavBarOption[] = [];
+
+  for (let i = 0; i < navBarElmCount; i++) {
+    defaultNavBarOptions.push({
+      key: faker.string.uuid(),
+      label: faker.string.alpha(10),
+      to: `/${faker.string.alpha(10)}`,
+    });
+  }
 
   return {
     user: userEvent.setup(),
-    ...render(ui, { wrapper: BrowserRouter }),
+    renderedRootNav: rootNav ?? defaultRootNav,
+    renderedNavBarOptions: navBarOptions ?? defaultNavBarOptions,
+    renderedComponent: render(
+      <TopBar
+        rootNav={rootNav ?? defaultRootNav}
+        navBarOptions={navBarOptions ?? defaultNavBarOptions}
+        {...props}
+      />,
+      { wrapper: BrowserRouter }
+    ),
   };
 };
 
 describe("TopBar", () => {
-  it("is rendered correctly", () => {
-    renderWithRouter(<TopBar />);
+  it("renders the correct number of links", () => {
+    const { renderedNavBarOptions, renderedComponent } = renderWithRouter();
+    const expectedLinkCount = renderedNavBarOptions.length + 1;
 
-    const homeNavLink = screen.getByTestId("nav-link-home");
-    const createMappingNavLink = screen.getByTestId("nav-link-create");
-    const allMappingsNavLink = screen.getByTestId("nav-link-mappings");
+    const linkElements = renderedComponent.getAllByRole("link");
 
-    expect(homeNavLink).toHaveAttribute("href", "/");
-    expect(homeNavLink).toHaveTextContent(/URL Mapper/i);
+    expect(linkElements.length).toBe(expectedLinkCount);
+  });
 
-    expect(createMappingNavLink).toHaveAttribute("href", "/create");
-    expect(createMappingNavLink).toHaveTextContent(/Create Mapping/i);
+  it("is has the correct hrefs and names", () => {
+    const { renderedRootNav, renderedNavBarOptions, renderedComponent } =
+      renderWithRouter();
 
-    expect(allMappingsNavLink).toHaveAttribute("href", "/mappings");
-    expect(allMappingsNavLink).toHaveTextContent(/All Mappings/i);
+    [renderedRootNav, ...renderedNavBarOptions].forEach(
+      (renderedNavBarOption) => {
+        const navBarLink = renderedComponent.getByText(
+          renderedNavBarOption.label
+        );
+        expect(navBarLink).toHaveAttribute("href", renderedNavBarOption.to);
+        expect(navBarLink).toHaveTextContent(renderedNavBarOption.label);
+      }
+    );
   });
 
   it("can navigate to different routes", async () => {
-    const { user } = renderWithRouter(<TopBar />);
+    const { user, renderedRootNav, renderedNavBarOptions, renderedComponent } =
+      renderWithRouter();
 
-    const createMappingNavLink = screen.getByTestId("nav-link-create");
-    const homeNavLink = screen.getByTestId("nav-link-home");
-    const allMappingsNavLink = screen.getByTestId("nav-link-mappings");
+    for (const renderedNavBarOption of [
+      renderedRootNav,
+      ...renderedNavBarOptions,
+    ]) {
+      const navBarLink = renderedComponent.getByText(
+        renderedNavBarOption.label
+      );
 
-    expect(location.pathname).toBe("/");
-
-    await user.click(createMappingNavLink);
-    expect(location.pathname).toBe("/create");
-
-    await user.click(allMappingsNavLink);
-    expect(location.pathname).toBe("/mappings");
-
-    await user.click(homeNavLink);
-    expect(location.pathname).toBe("/");
+      await user.click(navBarLink);
+      expect(location.pathname).toBe(renderedNavBarOption.to);
+    }
   });
 });
