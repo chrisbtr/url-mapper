@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import CreateMappingForm from "./CreateMappingForm";
 
 describe("CreateMappingForm", () => {
@@ -12,7 +13,7 @@ describe("CreateMappingForm", () => {
     expect(submitButton.length).toBe(1);
   });
 
-  it("can submit with valid arguments", () => {
+  it("can submit with valid arguments", async () => {
     const testValues = {
       urlKey: "FOO",
       url: "https://foo.com",
@@ -29,7 +30,9 @@ describe("CreateMappingForm", () => {
 
     const submitButton = screen.getByRole("button");
 
-    submitButton.click();
+    const user = userEvent.setup();
+    await user.click(submitButton)
+
     expect(testValues.handleSubmit).toHaveBeenCalledTimes(1);
   });
 
