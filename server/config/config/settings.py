@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = env.list('ALLOWED_ORIGINS')
 ALLOWED_HOSTS=['*']
+CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -109,7 +110,16 @@ CACHES = {
 #     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 # ]
 
-AUTH_USER_MODEL = 'mapperApp.User'
+AUTH_USER_MODEL = 'mapperApp.AppUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
