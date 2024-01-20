@@ -16,10 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from mapperApp.api.urls import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('account/', include('mapperApp.urls')),
+    path('api/', include('mapperApp.urls')),
 ]
