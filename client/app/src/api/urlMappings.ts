@@ -25,9 +25,9 @@ export type UrlMappingPostError = {
 
 const urlMappingsApi = {
   getAll: (params?: UrlMappingGetAllParams) =>
-    entryPoint.get<UrlMappingGetAllResponse>("", { params: params }),
-  get: (key: string) => entryPoint.get<UrlMapping>(key),
-  post: (data: UrlMapping) => entryPoint.post("", data),
+    entryPoint.get<UrlMappingGetAllResponse>("mappings", { params: params }),
+  get: (key: string) => entryPoint.get<UrlMapping>(`mappings/${key}`),
+  post: (data: UrlMapping) => entryPoint.post("mappings/", data),
 };
 
 export default urlMappingsApi;
