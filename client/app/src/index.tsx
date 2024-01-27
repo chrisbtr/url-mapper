@@ -13,6 +13,7 @@ import theme from "./theme";
 import RedirectRoute from "./routes/RedirectRoute/RedirectRoute";
 import AllMappingsRoute from "./routes/AllMappingsRoute/AllMappingsRoute";
 import CreateMappingRoute from "./routes/CreateMappingRoute/CreateMappingRoute";
+import AccountRoute from "./routes/AccountRoute/AccountRoute";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -23,6 +24,10 @@ const navRouteProps: Record<string, RouteProps> = {
   "URL Mapper": {
     path: "/",
     element: <App />,
+  },
+  "Account": {
+    path: "/account",
+    element: <AccountRoute />
   },
   "Create Mapping": {
     path: "/create",
