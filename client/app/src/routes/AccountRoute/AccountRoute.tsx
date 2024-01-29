@@ -2,11 +2,10 @@ import React from "react";
 import { TextFieldProps } from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 import { isAxiosError } from "axios";
 import CreateAccountForm from "../../components/CreateAccountForm/CreateAccountForm";
+import SnackbarAlert from "../../components/SnackbarAlert/SnackbarAlert";
 import accountApi, { CreateAccountError } from "../../api/account";
 
 const AccountRoute: React.FC = () => {
@@ -118,20 +117,12 @@ const AccountRoute: React.FC = () => {
             ),
           }}
         />
-        <Snackbar
+        <SnackbarAlert
           open={isSnackbarOpen}
-          autoHideDuration={5000}
           onClose={handleCloseSnackbar}
-        >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity={isAlertErrorMessage ? "error" : "success"}
-            variant="filled"
-            sx={{ width: "100%" }}
-          >
-            {alertMessage}
-          </Alert>
-        </Snackbar>
+          error={isAlertErrorMessage}
+          alertMessage={alertMessage}
+        />
       </Box>
     </>
   );

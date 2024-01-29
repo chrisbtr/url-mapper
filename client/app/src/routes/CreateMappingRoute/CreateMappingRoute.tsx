@@ -1,11 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 import { isAxiosError } from "axios";
 import CreateMappingForm from "../../components/CreateMappingForm/CreateMappingForm";
+import SnackbarAlert from "../../components/SnackbarAlert/SnackbarAlert";
 import urlMappingsApi, {
   UrlMapping,
   UrlMappingPostError,
@@ -84,7 +83,7 @@ const CreateMappingRoute: React.FC = () => {
 
   const handleCloseSnackbar = () => {
     setIsSnackbarOpen(false);
-    setAlertMessage("");
+    // setAlertMessage("");
   };
 
   return (
@@ -129,20 +128,12 @@ const CreateMappingRoute: React.FC = () => {
             ),
           }}
         />
-        <Snackbar
+        <SnackbarAlert
           open={isSnackbarOpen}
-          autoHideDuration={5000}
           onClose={handleCloseSnackbar}
-        >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity={isAlertErrorMessage ? "error" : "success"}
-            variant="filled"
-            sx={{ width: "100%" }}
-          >
-            {alertMessage}
-          </Alert>
-        </Snackbar>
+          error={isAlertErrorMessage}
+          alertMessage={alertMessage}
+        />
       </Box>
     </>
   );
