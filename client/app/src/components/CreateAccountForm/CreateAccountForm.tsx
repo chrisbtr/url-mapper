@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Paper, { PaperProps } from "@mui/material/Paper";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export type CreateAccountFormProps = {
   usernameTextFieldProps?: TextFieldProps;
@@ -19,13 +20,27 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
     <Paper
       component="form"
       autoComplete="off"
-      sx={{ p: 2, my: 1 }}
+      sx={{ p: 2, my: 1, width: "600px" }}
       {...paperFormProps}
     >
-      <Box justifyContent="center">
+      <Typography
+        variant="h5"
+        noWrap
+        sx={{
+          my: 1,
+          fontWeight: 500,
+          textAlign: "center",
+        }}
+      >
+        Create Your Account
+      </Typography>
+      <Typography variant="body1" sx={{ mt: 1, mb: 2 }}>
+        Create an account to keep track of your URL mappings
+      </Typography>
+      <Box sx={{ mb: 2, mx: 8 }}>
         <TextField
           required
-          sx={{ width: "25%", mb: 2 }}
+          fullWidth
           id="username-input"
           size="small"
           label="Username"
@@ -35,10 +50,10 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
           {...usernameTextFieldProps}
         />
       </Box>
-      <Box justifyContent="center">
+      <Box sx={{ mb: 2, mx: 8 }}>
         <TextField
           required
-          sx={{ width: "25%", mb: 2 }}
+          fullWidth
           id="password-input"
           size="small"
           type="password"

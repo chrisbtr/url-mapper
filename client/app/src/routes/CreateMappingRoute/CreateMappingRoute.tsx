@@ -1,7 +1,5 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import { isAxiosError } from "axios";
 import CreateMappingForm from "../../components/CreateMappingForm/CreateMappingForm";
 import SnackbarAlert from "../../components/SnackbarAlert/SnackbarAlert";
@@ -87,55 +85,47 @@ const CreateMappingRoute: React.FC = () => {
   };
 
   return (
-    <>
-      <Typography
-        variant="h3"
-        noWrap
-        sx={{
-          my: 2,
-          fontWeight: 500,
-          textAlign: "center",
+    <Box
+      sx={{
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <CreateMappingForm
+        paperFormProps={{ onSubmit: handleSubmit }}
+        urlTextFieldProps={{
+          onChange: handleUrlInputChange,
+          value: url,
+          error: urlErrorMessages === null ? false : true,
+          helperText: (
+            <>
+              {urlErrorMessages?.map((errorMessage) => (
+                <>{errorMessage}</>
+              ))}
+            </>
+          ),
         }}
-      >
-        Create Mapping
-      </Typography>
-      <Divider />
-      <Box sx={{ textAlign: "center" }}>
-        <CreateMappingForm
-          paperFormProps={{ onSubmit: handleSubmit }}
-          urlTextFieldProps={{
-            onChange: handleUrlInputChange,
-            value: url,
-            error: urlErrorMessages === null ? false : true,
-            helperText: (
-              <>
-                {urlErrorMessages?.map((errorMessage) => (
-                  <>{errorMessage}</>
-                ))}
-              </>
-            ),
-          }}
-          urlKeyTextFieldProps={{
-            onChange: handleUrlKeyInputChange,
-            value: urlKey,
-            error: urlKeyErrorMessages === null ? false : true,
-            helperText: (
-              <>
-                {urlKeyErrorMessages?.map((errorMessage) => (
-                  <>{errorMessage}</>
-                ))}
-              </>
-            ),
-          }}
-        />
-        <SnackbarAlert
-          open={isSnackbarOpen}
-          onClose={handleCloseSnackbar}
-          error={isAlertErrorMessage}
-          alertMessage={alertMessage}
-        />
-      </Box>
-    </>
+        urlKeyTextFieldProps={{
+          onChange: handleUrlKeyInputChange,
+          value: urlKey,
+          error: urlKeyErrorMessages === null ? false : true,
+          helperText: (
+            <>
+              {urlKeyErrorMessages?.map((errorMessage) => (
+                <>{errorMessage}</>
+              ))}
+            </>
+          ),
+        }}
+      />
+      <SnackbarAlert
+        open={isSnackbarOpen}
+        onClose={handleCloseSnackbar}
+        error={isAlertErrorMessage}
+        alertMessage={alertMessage}
+      />
+    </Box>
   );
 };
 

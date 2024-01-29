@@ -1,8 +1,6 @@
 import React from "react";
 import { TextFieldProps } from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
 import { isAxiosError } from "axios";
 import CreateAccountForm from "../../components/CreateAccountForm/CreateAccountForm";
 import SnackbarAlert from "../../components/SnackbarAlert/SnackbarAlert";
@@ -76,55 +74,47 @@ const AccountRoute: React.FC = () => {
   };
 
   return (
-    <>
-      <Typography
-        variant="h3"
-        noWrap
-        sx={{
-          my: 2,
-          fontWeight: 500,
-          textAlign: "center",
+    <Box
+      sx={{
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <CreateAccountForm
+        paperFormProps={{ onSubmit: handleSubmit }}
+        usernameTextFieldProps={{
+          value: usernameInput,
+          onChange: handleUsernameInputChange,
+          error: usernameErrorMessages === null ? false : true,
+          helperText: (
+            <>
+              {usernameErrorMessages?.map((errorMessage) => (
+                <>{errorMessage}</>
+              ))}
+            </>
+          ),
         }}
-      >
-        Create your account
-      </Typography>
-      <Divider />
-      <Box sx={{ textAlign: "center" }}>
-        <CreateAccountForm
-          paperFormProps={{ onSubmit: handleSubmit }}
-          usernameTextFieldProps={{
-            value: usernameInput,
-            onChange: handleUsernameInputChange,
-            error: usernameErrorMessages === null ? false : true,
-            helperText: (
-              <>
-                {usernameErrorMessages?.map((errorMessage) => (
-                  <>{errorMessage}</>
-                ))}
-              </>
-            ),
-          }}
-          passwordTextFieldProps={{
-            value: passwordInput,
-            onChange: handlePasswordInputChange,
-            error: passwordErrorMessages === null ? false : true,
-            helperText: (
-              <>
-                {passwordErrorMessages?.map((errorMessage) => (
-                  <>{errorMessage}</>
-                ))}
-              </>
-            ),
-          }}
-        />
-        <SnackbarAlert
-          open={isSnackbarOpen}
-          onClose={handleCloseSnackbar}
-          error={isAlertErrorMessage}
-          alertMessage={alertMessage}
-        />
-      </Box>
-    </>
+        passwordTextFieldProps={{
+          value: passwordInput,
+          onChange: handlePasswordInputChange,
+          error: passwordErrorMessages === null ? false : true,
+          helperText: (
+            <>
+              {passwordErrorMessages?.map((errorMessage) => (
+                <>{errorMessage}</>
+              ))}
+            </>
+          ),
+        }}
+      />
+      <SnackbarAlert
+        open={isSnackbarOpen}
+        onClose={handleCloseSnackbar}
+        error={isAlertErrorMessage}
+        alertMessage={alertMessage}
+      />
+    </Box>
   );
 };
 

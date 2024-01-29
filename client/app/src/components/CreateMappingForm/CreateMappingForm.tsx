@@ -30,13 +30,27 @@ const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
     <Paper
       component="form"
       autoComplete="off"
-      sx={{ p: 2, my: 1 }}
+      sx={{ p: 2, my: 1, width: "600px" }}
       {...paperFormProps}
     >
-      <Box justifyContent="center">
+      <Typography
+        variant="h5"
+        noWrap
+        sx={{
+          my: 1,
+          fontWeight: 500,
+          textAlign: "center",
+        }}
+      >
+        Create A URL Mapping
+      </Typography>
+      <Typography variant="body1" sx={{ mt: 1, mb: 2 }}>
+        Enter your URL and a key to create a shortened version
+      </Typography>
+      <Box sx={{ mb: 2, mx: 8 }}>
         <TextField
           required
-          sx={{ width: "25%", mb: 2 }}
+          fullWidth
           id="url-key-input"
           size="small"
           placeholder="example"
@@ -47,10 +61,10 @@ const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
           {...urlKeyTextFieldProps}
         />
       </Box>
-      <Box justifyContent="center">
+      <Box sx={{ mb: 2, mx: 8 }}>
         <TextField
           required
-          sx={{ width: "25%", mb: 2 }}
+          fullWidth
           id="full-url-input"
           size="small"
           placeholder="https://example.com"
