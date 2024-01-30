@@ -1,6 +1,6 @@
 import { render as renderDOM, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import SnackbarAlert, { SnackbarAlertProps } from "./SnackbarAlert";
+import SnackbarAlert, { SnackbarAlertProps } from "components/SnackbarAlert/SnackbarAlert";
 
 const render = ({
   open = true,

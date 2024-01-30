@@ -1,19 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import reportWebVitals from "./reportWebVitals";
+import reportWebVitals from "reportWebVitals";
 import {
   StyledEngineProvider,
   ThemeProvider,
   CssBaseline,
 } from "@mui/material";
 import { BrowserRouter, Routes, Route, RouteProps } from "react-router-dom";
-import TopBar, { NavBarOption } from "./components/TopBar/TopBar";
-import App from "./App";
-import theme from "./theme";
-import RedirectRoute from "./routes/RedirectRoute/RedirectRoute";
-import AllMappingsRoute from "./routes/AllMappingsRoute/AllMappingsRoute";
-import CreateMappingRoute from "./routes/CreateMappingRoute/CreateMappingRoute";
-import AccountRoute from "./routes/AccountRoute/AccountRoute";
+import TopBar, { NavBarOption } from "components/TopBar/TopBar";
+import App from "App";
+import theme from "theme";
+import RedirectRoute from "routes/RedirectRoute/RedirectRoute";
+import AllMappingsRoute from "routes/AllMappingsRoute/AllMappingsRoute";
+import CreateMappingRoute from "routes/CreateMappingRoute/CreateMappingRoute";
+import AccountRoute from "routes/AccountRoute/AccountRoute";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";

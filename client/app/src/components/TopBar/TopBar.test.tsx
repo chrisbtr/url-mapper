@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import { faker } from "@faker-js/faker";
-import TopBar, { TopBarProps, NavBarOption } from "./TopBar";
+import TopBar, { TopBarProps, NavBarOption } from "components/TopBar/TopBar";
 
 const renderWithRouter = (
   { rootNav, navBarOptions, ...props }: Partial<TopBarProps> = {},

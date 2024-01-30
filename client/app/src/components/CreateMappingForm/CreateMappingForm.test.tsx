@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import CreateMappingForm from "./CreateMappingForm";
+import CreateMappingForm from "components/CreateMappingForm/CreateMappingForm";
 
 describe("CreateMappingForm", () => {
   it("renders the form", () => {

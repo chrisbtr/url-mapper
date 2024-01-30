@@ -2,9 +2,9 @@ import React from "react";
 import { TextFieldProps } from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { isAxiosError } from "axios";
-import CreateAccountForm from "../../components/CreateAccountForm/CreateAccountForm";
-import SnackbarAlert from "../../components/SnackbarAlert/SnackbarAlert";
-import accountApi, { CreateAccountError } from "../../api/account";
+import CreateAccountForm from "components/CreateAccountForm/CreateAccountForm";
+import SnackbarAlert from "components/SnackbarAlert/SnackbarAlert";
+import accountApi, { CreateAccountError } from "api/account";
 
 const AccountRoute: React.FC = () => {
   const [usernameInput, setUsernameInput] = React.useState("");

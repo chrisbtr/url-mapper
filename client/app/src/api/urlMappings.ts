@@ -1,4 +1,4 @@
-import entryPoint from "./entryPoint";
+import entryPoint from "api/entryPoint";
 
 export type UrlMapping = {
   fullURL: string;

@@ -12,8 +12,8 @@ import { useSearchParams } from "react-router-dom";
 import urlMappingsApi, {
   UrlMapping,
   UrlMappingGetAllParams,
-} from "../../api/urlMappings";
-import URLMapping from "../../components/URLMapping/URLMapping";
+} from "api/urlMappings";
+import URLMapping from "components/URLMapping/URLMapping";
 
 const AllMappingsRoute: React.FC = () => {
   // React router wrapper for reading and writing search parameters

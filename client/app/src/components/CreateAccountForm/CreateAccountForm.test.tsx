@@ -1,6 +1,6 @@
 import { render as renderDOM } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import CreateAccountForm, { CreateAccountFormProps } from "./CreateAccountForm";
+import CreateAccountForm, { CreateAccountFormProps } from "components/CreateAccountForm/CreateAccountForm";
 
 const render = (props: Partial<CreateAccountFormProps> = {}) => {
   return {

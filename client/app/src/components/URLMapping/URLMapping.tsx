@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { UrlMapping } from "../../api/urlMappings";
+import { UrlMapping } from "api/urlMappings";
 
 export type URLMappingProps = {
   urlMapping: UrlMapping;

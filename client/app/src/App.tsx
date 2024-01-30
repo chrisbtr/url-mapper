@@ -1,6 +1,6 @@
 import React from "react";
-import CreateMappingForm from "./components/CreateMappingForm/CreateMappingForm";
-import urlMappingsApi, { UrlMapping } from "./api/urlMappings";
+import CreateMappingForm from "components/CreateMappingForm/CreateMappingForm";
+import urlMappingsApi, { UrlMapping } from "api/urlMappings";
 
 function App() {
   const [url, setUrl] = React.useState("");

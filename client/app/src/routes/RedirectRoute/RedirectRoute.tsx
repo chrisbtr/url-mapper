@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import urlMappingsApi from "../../api/urlMappings";
+import urlMappingsApi from "api/urlMappings";
 
 type RedirectRouteParams = {
   urlKey: string;

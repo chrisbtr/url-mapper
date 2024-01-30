@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import URLMapping from "./URLMapping";
+import URLMapping from "components/URLMapping/URLMapping";
 
 describe("URLMapping", () => {
   it("renders links", () => {

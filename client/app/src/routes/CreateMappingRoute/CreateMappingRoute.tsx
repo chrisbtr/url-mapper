@@ -1,12 +1,12 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { isAxiosError } from "axios";
-import CreateMappingForm from "../../components/CreateMappingForm/CreateMappingForm";
-import SnackbarAlert from "../../components/SnackbarAlert/SnackbarAlert";
+import CreateMappingForm from "components/CreateMappingForm/CreateMappingForm";
+import SnackbarAlert from "components/SnackbarAlert/SnackbarAlert";
 import urlMappingsApi, {
   UrlMapping,
   UrlMappingPostError,
-} from "../../api/urlMappings";
+} from "api/urlMappings";
 
 const CreateMappingRoute: React.FC = () => {
   const [url, setUrl] = React.useState("");
