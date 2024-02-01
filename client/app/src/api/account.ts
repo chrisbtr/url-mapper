@@ -11,7 +11,9 @@ export type LoginAccountData = {
 };
 
 export type AccountInfo = {
-  username: string;
+  user: {
+    username: string;
+  };
 };
 
 export type CreateAccountError = {
