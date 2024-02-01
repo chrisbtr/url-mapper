@@ -20,6 +20,7 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
     <Paper
       component="form"
       autoComplete="off"
+      name="register-form"
       sx={{ p: 2, my: 1, width: "600px" }}
       {...paperFormProps}
     >
