@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import { BrowserRouter, Routes, Route, RouteProps } from "react-router-dom";
 import TopBar, { NavBarOption } from "components/TopBar/TopBar";
-import App from "App";
 import theme from "theme";
 import RedirectRoute from "routes/RedirectRoute/RedirectRoute";
 import AllMappingsRoute from "routes/AllMappingsRoute/AllMappingsRoute";
@@ -23,11 +22,11 @@ import "@fontsource/roboto/700.css";
 const navRouteProps: Record<string, RouteProps> = {
   "URL Mapper": {
     path: "/",
-    element: <App />,
+    element: <AccountRoute />,
   },
-  "Account": {
+  Account: {
     path: "/account",
-    element: <AccountRoute />
+    element: <AccountRoute />,
   },
   "Create Mapping": {
     path: "/create",
