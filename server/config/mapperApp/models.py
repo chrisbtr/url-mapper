@@ -38,6 +38,6 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
   objects = AppUserManager()
 
 class URLMapping(models.Model):
-  # user = models.ForeignKey("User", on_delete=models.CASCADE)
+  userId = models.ForeignKey("AppUser", on_delete=models.CASCADE, blank=True, null=True)
   urlKey = models.TextField(max_length=200, unique=True, primary_key=True)
   fullURL = models.URLField(max_length=200)

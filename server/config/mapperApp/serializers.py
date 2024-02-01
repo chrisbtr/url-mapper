@@ -33,4 +33,5 @@ class UserSerializer(serializers.ModelSerializer):
 class URLMappingSerializer(serializers.ModelSerializer):
   class Meta:
     model = URLMapping
-    fields = ('urlKey', 'fullURL')
+    fields = ('userId', 'urlKey', 'fullURL')
+
