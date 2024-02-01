@@ -48,6 +48,9 @@ class UserLogin(APIView):
       return Response({e.code: [e.message]}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLogout(APIView):
+  permission_classes = (permissions.AllowAny,)
+  authentication_classes = ()
+  
   def post(self, request):
     logout(request)
 
