@@ -7,6 +7,7 @@ export default axios.create({
   baseURL: entryPointUrl,
   headers: { "Content-Type": "application/json" },
   xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFToken",
+  xsrfHeaderName: "X-CSRFTOKEN",
+  withXSRFToken: true,
   withCredentials: true,
 });
