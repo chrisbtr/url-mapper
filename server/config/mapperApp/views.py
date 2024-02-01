@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model, login, logout
+from django.contrib.auth import login, logout
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
@@ -7,10 +7,11 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.request import Request
 from .serializers import UserLoginSerializer, UserRegisterSerializer, UserSerializer, URLMappingSerializer
 from .validations import custom_validation, validate_password, validate_username
 from .paginations import URLMappingPagination
-from .models import URLMapping
+from .models import URLMapping, AppUser
 
 # Create your views here.
 class UserRegister(APIView):
@@ -90,3 +91,35 @@ class URLMappingViewSet(ModelViewSet):
       cache.set(pk, serializer.data)
   
     return Response(serializer.data)
+
+  def create(self, request: Request, *args, **kwargs):
+    # get the user making the request
+    user: AppUser = request.user
+
+    if user.is_authenticated:
+      # If a user is logged in add there user id to the `URLMapping` 
+      serializer: URLMappingSerializer = self.get_serializer(data=request.data)
+      serializer.is_valid(raise_exception=True)
+      instance = serializer.save()
+      serializer.update(instance, {'userId': user})
+      headers = self.get_success_headers(serializer.data)
+      return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # If not logged in create a `URLMapping` without a user id
+    return super().create(request, *args, **kwargs)
+    
+  def destroy(self, request: Request, *args, **kwargs):
+    # get the the URLMapping to delete
+    instance: URLMapping = self.get_object()
+
+    # get the user making the request
+    user: AppUser = request.user
+
+    # if the user is logged in and created the `URLMapping` or was created by an anonymous user,
+    # then delete the `URLMapping`
+    if user.is_authenticated and (instance.userId == user or instance.userId == None):
+      return super().destroy(request, *args, **kwargs)
+
+    # if the user can't delete the `URLMapping` respond with a 401 status
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+    
