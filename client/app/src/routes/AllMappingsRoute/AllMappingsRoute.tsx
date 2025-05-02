@@ -9,10 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useSearchParams } from "react-router-dom";
-import urlMappingsApi, {
-  UrlMapping,
-  UrlMappingGetAllParams,
-} from "api/urlMappings";
+import urlMappingsApi from "api/urlMappings";
 import URLMapping from "components/URLMapping/URLMapping";
 import { useQuery } from "@tanstack/react-query";
 
@@ -49,7 +46,7 @@ const AllMappingsRoute: React.FC = () => {
     searchParams.set("page", String(currentPage));
     searchParams.set("search", currentSearchQuery);
     setSearchParams(searchParams);
-  }, [currentPage, currentSearchQuery]);
+  }, [currentPage, currentSearchQuery, searchParams, setSearchParams]);
 
   // Handler for changing pages
   const handlePaginationChange: PaginationProps["onChange"] = (_, page) => {
@@ -112,7 +109,7 @@ const AllMappingsRoute: React.FC = () => {
   // If the `mappedUrlCount` or `pageSize` change recalculate `pageCount`
   React.useEffect(() => {
     setPageCount(Math.ceil(mappedUrlCount / pageSize));
-  }, [mappedUrlCount, pageSize]);
+  }, [mappedUrlCount]);
 
   return (
     <>

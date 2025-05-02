@@ -30,7 +30,7 @@ const RedirectRoute: React.FC = () => {
     if (mapping.fullURL !== urlKey) {
       window.location.replace(mapping.fullURL);
     }
-  }, [mapping, mappingIsLoading, mappingIsError]);
+  }, [mapping, mappingIsLoading, mappingIsError, urlKey]);
 
   return (
     <Box textAlign="center">
