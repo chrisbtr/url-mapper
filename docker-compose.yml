@@ -16,6 +16,8 @@ services:
           condition: on-failure
     ports:
       - "8000:8000"
+    volumes:
+      - ./server/config/db.sqlite3:/app/db.sqlite3:rw
     networks:
       - webnet
   redis-master:
