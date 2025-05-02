@@ -1,9 +1,13 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import Paper, { PaperProps } from "@mui/material/Paper";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import {
+  Stack,
+  Typography,
+  TextField,
+  TextFieldProps,
+  Button,
+  Paper,
+  PaperProps,
+} from "@mui/material";
 
 export type LoginFormProps = {
   usernameTextFieldProps?: TextFieldProps;
@@ -20,25 +24,23 @@ const LoginForm: React.FC<LoginFormProps> = ({
     <Paper
       component="form"
       autoComplete="off"
-      sx={{ p: 2, my: 1, width: "600px" }}
+      sx={{ p: 2, px: 8, my: 2, width: "600px" }}
       name="login-form"
       {...paperFormProps}
     >
-      <Typography
-        variant="h5"
-        noWrap
-        sx={{
-          my: 1,
-          fontWeight: 500,
-          textAlign: "center",
-        }}
-      >
-        Login
-      </Typography>
-      <Typography variant="body1" sx={{ mt: 1, mb: 2 }}>
-        Login to access your previously created URL mappings
-      </Typography>
-      <Box sx={{ mb: 2, mx: 8 }}>
+      <Stack justifyContent="center" gap={2}>
+        <Typography
+          component="h1"
+          variant="h5"
+          noWrap
+          fontWeight={500}
+          textAlign="center"
+        >
+          Login
+        </Typography>
+        <Typography variant="body1" textAlign="center">
+          Login to access your previously created URL mappings
+        </Typography>
         <TextField
           required
           fullWidth
@@ -50,8 +52,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
           }}
           {...usernameTextFieldProps}
         />
-      </Box>
-      <Box sx={{ mb: 2, mx: 8 }}>
         <TextField
           required
           fullWidth
@@ -64,10 +64,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
           }}
           {...passwordTextFieldProps}
         />
-      </Box>
-      <Button size="small" type="submit" sx={{ mb: 1 }}>
-        Login
-      </Button>
+        <Button size="small" type="submit">
+          Login
+        </Button>
+      </Stack>
     </Paper>
   );
 };

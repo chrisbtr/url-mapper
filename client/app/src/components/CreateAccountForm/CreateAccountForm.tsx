@@ -1,9 +1,13 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import Paper, { PaperProps } from "@mui/material/Paper";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import {
+  Stack,
+  Typography,
+  TextField,
+  TextFieldProps,
+  Button,
+  Paper,
+  PaperProps,
+} from "@mui/material";
 
 export type CreateAccountFormProps = {
   usernameTextFieldProps?: TextFieldProps;
@@ -21,24 +25,22 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
       component="form"
       autoComplete="off"
       name="register-form"
-      sx={{ p: 2, my: 1, width: "600px" }}
+      sx={{ p: 2, px: 8, my: 2, width: "600px" }}
       {...paperFormProps}
     >
-      <Typography
-        variant="h5"
-        noWrap
-        sx={{
-          my: 1,
-          fontWeight: 500,
-          textAlign: "center",
-        }}
-      >
-        Create Your Account
-      </Typography>
-      <Typography variant="body1" sx={{ mt: 1, mb: 2 }}>
-        Create an account to keep track of your URL mappings
-      </Typography>
-      <Box sx={{ mb: 2, mx: 8 }}>
+      <Stack justifyContent="center" gap={2}>
+        <Typography
+          component="h1"
+          variant="h5"
+          noWrap
+          fontWeight={500}
+          textAlign="center"
+        >
+          Create Your Account
+        </Typography>
+        <Typography variant="body1" textAlign="center">
+          Create an account to keep track of your URL mappings
+        </Typography>
         <TextField
           required
           fullWidth
@@ -50,8 +52,6 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
           }}
           {...usernameTextFieldProps}
         />
-      </Box>
-      <Box sx={{ mb: 2, mx: 8 }}>
         <TextField
           required
           fullWidth
@@ -64,10 +64,10 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
           }}
           {...passwordTextFieldProps}
         />
-      </Box>
-      <Button size="small" type="submit" sx={{ mb: 1 }}>
-        Create Account
-      </Button>
+        <Button size="small" type="submit" sx={{ mb: 1 }}>
+          Create Account
+        </Button>
+      </Stack>
     </Paper>
   );
 };
