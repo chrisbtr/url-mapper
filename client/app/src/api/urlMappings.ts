@@ -9,6 +9,7 @@ export type UrlMappingGetAllParams = {
   search?: string;
   page?: number;
   page_size?: number;
+  userId?: number;
 };
 
 export type UrlMappingGetAllResponse = {

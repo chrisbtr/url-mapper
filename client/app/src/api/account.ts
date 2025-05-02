@@ -13,6 +13,7 @@ export type LoginAccountData = {
 export type AccountInfo = {
   user: {
     username: string;
+    user_id: number;
   };
 };
 
