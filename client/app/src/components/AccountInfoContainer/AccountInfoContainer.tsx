@@ -39,18 +39,10 @@ const AccountInfoContainer: React.FC<AccountInfoContainerProps> = ({
     });
   return (
     <Stack component={Paper} p={2} gap={1} width="80%">
-      <Typography
-        variant="h5"
-        noWrap
-        sx={{
-          my: 1,
-          fontWeight: 500,
-          textAlign: "center",
-        }}
-      >
+      <Typography variant="h5" noWrap fontWeight={500} textAlign="center">
         Welcome {accountInfo.user.username}!
       </Typography>
-      <Typography variant="body1" sx={{ mt: 1, mb: 2 }}>
+      <Typography variant="body1" textAlign="center">
         Here you can keep track of all your previously created URL mappings.
       </Typography>
       <Box
