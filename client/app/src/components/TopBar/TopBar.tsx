@@ -52,7 +52,7 @@ const TopBar: React.FC<TopBarProps> = ({ rootNav, navBarOptions = [] }) => {
           >
             {rootNav.label}
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: "flex" }}>
             {navBarOptions.map(({ key, label, to }) => (
               <Button
                 key={key}
