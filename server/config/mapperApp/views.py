@@ -3,6 +3,7 @@ from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -61,7 +62,7 @@ class UserView(APIView):
   permission_classes = (permissions.IsAuthenticated,)
   authentication_classes = (SessionAuthentication,)
 
-  def get(self, request):
+  def get(self, request: Request):
     serializer = UserSerializer(request.user)
     return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
@@ -69,7 +70,8 @@ class URLMappingViewSet(ModelViewSet):
   queryset = URLMapping.objects.all()
   serializer_class = URLMappingSerializer
   pagination_class = URLMappingPagination
-  filter_backends = [filters.SearchFilter]
+  filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+  filterset_fields = ['userId']
   search_fields = ['urlKey', 'fullURL']
   permission_classes = (permissions.AllowAny,)
 
