@@ -25,7 +25,7 @@ class UserRegister(APIView):
       if serializer.is_valid(raise_exception=True):
         user = serializer.create(data)
         if user:
-          return Response(serializer.data, status=status.HTTP_201_CREATED)
+          return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     except ValidationError as e:
       return Response({e.code: [e.message]}, status=status.HTTP_400_BAD_REQUEST)
@@ -45,7 +45,7 @@ class UserLogin(APIView):
       if serializer.is_valid(raise_exception=True):
         user = serializer.check_user(data)
         login(request, user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(UserSerializer(request.user).data, status=status.HTTP_200_OK)
     except ValidationError as e:
       return Response({e.code: [e.message]}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -56,7 +56,7 @@ class UserLogout(APIView):
   def post(self, request):
     logout(request)
 
-    return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 class UserView(APIView):
   permission_classes = (permissions.IsAuthenticated,)
