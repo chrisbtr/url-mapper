@@ -28,7 +28,7 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = UserModel
-    fields = ('username',)
+    fields = ('username', 'user_id')
 
 class URLMappingSerializer(serializers.ModelSerializer):
   class Meta:
