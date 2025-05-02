@@ -1,6 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import urlMappingsApi from "api/urlMappings";
+import { useQuery } from "@tanstack/react-query";
+import { Box } from "@mui/material";
 
 type RedirectRouteParams = {
   urlKey: string;
@@ -9,26 +11,33 @@ type RedirectRouteParams = {
 const RedirectRoute: React.FC = () => {
   const { urlKey } = useParams<RedirectRouteParams>();
 
-  // On component mount fetch the full URL using `urlKey` route parameter and redirect
+  // Fetch the full URL using `urlKey` route parameter.
+  const {
+    data: mapping,
+    isLoading: mappingIsLoading,
+    isError: mappingIsError,
+  } = useQuery({
+    queryFn: async () => (await urlMappingsApi.get(urlKey as string)).data,
+
+    enabled: urlKey != null,
+  });
+
   React.useEffect(() => {
-    if (urlKey === undefined) {
+    if (mappingIsLoading || mappingIsError) {
       return;
     }
 
-    urlMappingsApi
-      .get(urlKey)
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200 && res.data.fullURL !== urlKey) {
-          window.location.replace(res.data.fullURL);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (mapping.fullURL !== urlKey) {
+      window.location.replace(mapping.fullURL);
+    }
+  }, [mapping, mappingIsLoading, mappingIsError]);
 
-  return <div>RedirectRoute</div>;
+  return (
+    <Box textAlign="center">
+      {mappingIsLoading && "Redirect..."}
+      {mappingIsError && "There was an error. Unable to redirect."}
+    </Box>
+  );
 };
 
 export default RedirectRoute;

@@ -1,16 +1,14 @@
 import React from "react";
 import { TextFieldProps } from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import AccountInfoContainer from "components/AccountInfoContainer/AccountInfoContainer";
 import { isAxiosError } from "axios";
 import AccountLoginSwitcher from "components/AccountLoginSwitcher/AccountLoginSwitcher";
 import SnackbarAlert from "components/SnackbarAlert/SnackbarAlert";
-import accountApi, { CreateAccountError, AccountInfo } from "api/account";
+import accountApi, { CreateAccountError } from "api/account";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const AccountRoute: React.FC = () => {
-  const [accountInfo, setAccountInfo] = React.useState<AccountInfo | null>(
-    null
-  );
-
   const [usernameInput, setUsernameInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
 
@@ -52,17 +50,14 @@ const AccountRoute: React.FC = () => {
     setPasswordInput("");
   };
 
-  const getAccountInfo = () => {
-    accountApi
-      .getAccount()
-      .then((res) => {
-        console.log(res.data)
-        setAccountInfo({...res.data});
-      })
-      .catch(() => {
-        console.log("Error fetching account data.")
-      });
-  };
+  const queryClient = useQueryClient();
+
+  const { data: accountInfo, isSuccess } = useQuery({
+    queryFn: async () => {
+      return (await accountApi.getAccount()).data;
+    },
+    queryKey: ["account", "user"],
+  });
 
   const handleCreateAccountSubmit: React.FormEventHandler<HTMLFormElement> = (
     event
@@ -105,7 +100,7 @@ const AccountRoute: React.FC = () => {
       .then(() => {
         setUsernameErrorMessages(null);
         setPasswordErrorMessages(null);
-        getAccountInfo();
+        queryClient.invalidateQueries(["account", "user"]);
 
         openSnackbar("Successfully logged in.", { isError: false });
       })
@@ -119,10 +114,10 @@ const AccountRoute: React.FC = () => {
   };
 
   const handleLogout = () => {
-    setAccountInfo(null);
     accountApi
       .logout()
       .then(() => {
+        queryClient.invalidateQueries(["account", "user"]);
         openSnackbar("Successfully logged out.", { isError: false });
       })
       .catch(() => {
@@ -130,75 +125,77 @@ const AccountRoute: React.FC = () => {
       });
   };
 
-  React.useEffect(() => {
-    getAccountInfo();
-  }, []);
-
   return (
     <Box
       sx={{
-        textAlign: "center",
         display: "flex",
         justifyContent: "center",
       }}
     >
-      <AccountLoginSwitcher
-        onCreateAccountSubmit={handleCreateAccountSubmit}
-        onLoginSubmit={handleLoginSubmit}
-        onClearForm={handleClearForm}
-        createAccountFormProps={{
-          usernameTextFieldProps: {
-          value: usernameInput,
-          onChange: handleUsernameInputChange,
-          error: usernameErrorMessages === null ? false : true,
-          helperText: (
-            <>
-              {usernameErrorMessages?.map((errorMessage) => (
-                <>{errorMessage}</>
-              ))}
-            </>
-          ),
-          },
-          passwordTextFieldProps: {
-            value: passwordInput,
-            onChange: handlePasswordInputChange,
-            error: passwordErrorMessages === null ? false : true,
-            helperText: (
-              <>
-                {passwordErrorMessages?.map((errorMessage) => (
-                  <>{errorMessage}</>
-                ))}
-              </>
-            ),
-          },
-        }}
-        loginFormProps={{
-          usernameTextFieldProps: {
-            value: usernameInput,
-            onChange: handleUsernameInputChange,
-            error: usernameErrorMessages === null ? false : true,
-            helperText: (
-              <>
-                {usernameErrorMessages?.map((errorMessage) => (
-                  <>{errorMessage}</>
-                ))}
-              </>
-            ),
-          },
-          passwordTextFieldProps: {
-          value: passwordInput,
-          onChange: handlePasswordInputChange,
-          error: passwordErrorMessages === null ? false : true,
-          helperText: (
-            <>
-              {passwordErrorMessages?.map((errorMessage) => (
-                <>{errorMessage}</>
-              ))}
-            </>
-          ),
-          },
-        }}
-      />
+      {!isSuccess ? (
+        <AccountLoginSwitcher
+          onCreateAccountSubmit={handleCreateAccountSubmit}
+          onLoginSubmit={handleLoginSubmit}
+          onClearForm={handleClearForm}
+          createAccountFormProps={{
+            usernameTextFieldProps: {
+              value: usernameInput,
+              onChange: handleUsernameInputChange,
+              error: usernameErrorMessages === null ? false : true,
+              helperText: (
+                <>
+                  {usernameErrorMessages?.map((errorMessage) => (
+                    <>{errorMessage}</>
+                  ))}
+                </>
+              ),
+            },
+            passwordTextFieldProps: {
+              value: passwordInput,
+              onChange: handlePasswordInputChange,
+              error: passwordErrorMessages === null ? false : true,
+              helperText: (
+                <>
+                  {passwordErrorMessages?.map((errorMessage) => (
+                    <>{errorMessage}</>
+                  ))}
+                </>
+              ),
+            },
+          }}
+          loginFormProps={{
+            usernameTextFieldProps: {
+              value: usernameInput,
+              onChange: handleUsernameInputChange,
+              error: usernameErrorMessages === null ? false : true,
+              helperText: (
+                <>
+                  {usernameErrorMessages?.map((errorMessage) => (
+                    <>{errorMessage}</>
+                  ))}
+                </>
+              ),
+            },
+            passwordTextFieldProps: {
+              value: passwordInput,
+              onChange: handlePasswordInputChange,
+              error: passwordErrorMessages === null ? false : true,
+              helperText: (
+                <>
+                  {passwordErrorMessages?.map((errorMessage) => (
+                    <>{errorMessage}</>
+                  ))}
+                </>
+              ),
+            },
+          }}
+        />
+      ) : (
+        <AccountInfoContainer
+          accountInfo={accountInfo}
+          onLogout={handleLogout}
+        />
+      )}
       <SnackbarAlert
         open={isSnackbarOpen}
         onClose={handleCloseSnackbar}

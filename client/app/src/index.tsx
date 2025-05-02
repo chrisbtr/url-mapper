@@ -7,6 +7,8 @@ import {
   CssBaseline,
 } from "@mui/material";
 import { BrowserRouter, Routes, Route, RouteProps } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import TopBar, { NavBarOption } from "components/TopBar/TopBar";
 import theme from "theme";
 import RedirectRoute from "routes/RedirectRoute/RedirectRoute";
@@ -18,6 +20,10 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
 
 const navRouteProps: Record<string, RouteProps> = {
   "URL Mapper": {
@@ -56,20 +62,25 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <BrowserRouter>
-          <TopBar rootNav={rootNav} navBarOptions={navBarOptions} />
-          <Routes>
-            {Object.keys(navRouteProps).map((label) => (
-              <Route key={`route-${label.trim()}`} {...navRouteProps[label]} />
-            ))}
-            <Route path="/m/:urlKey" element={<RedirectRoute />} />
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <QueryClientProvider client={queryClient}>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <BrowserRouter>
+            <TopBar rootNav={rootNav} navBarOptions={navBarOptions} />
+            <Routes>
+              {Object.keys(navRouteProps).map((label) => (
+                <Route
+                  key={`route-${label.trim()}`}
+                  {...navRouteProps[label]}
+                />
+              ))}
+              <Route path="/m/:urlKey" element={<RedirectRoute />} />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </StyledEngineProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

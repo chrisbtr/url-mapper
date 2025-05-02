@@ -14,19 +14,13 @@ import urlMappingsApi, {
   UrlMappingGetAllParams,
 } from "api/urlMappings";
 import URLMapping from "components/URLMapping/URLMapping";
+import { useQuery } from "@tanstack/react-query";
+
+const pageSize = 5;
 
 const AllMappingsRoute: React.FC = () => {
   // React router wrapper for reading and writing search parameters
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // The list of mapped URLs to display
-  const [mappedUrls, setMappedUrls] = React.useState<UrlMapping[]>([]);
-
-  // The pagination page size
-  const [pageSize, setPageSize] = React.useState(5);
-
-  // The total amount of mapped URLs
-  const [mappedUrlCount, setMappedUrlCount] = React.useState(0);
 
   // The search query used to populate the search bar with (defaults to the value in search parameters)
   const [searchQuery, setSearchQuery] = React.useState(
@@ -51,31 +45,15 @@ const AllMappingsRoute: React.FC = () => {
   // Helper function to check if the search bar is empty
   const isSearchQueryEmpty = () => searchQuery === "";
 
-  // Helper function to get the URL mappings
-  const getFilteredMappings = (params: UrlMappingGetAllParams = {}) => {
-    return urlMappingsApi
-      .getAll({ ...params, page_size: pageSize })
-      .then((res) => {
-        // Update component state based on the function arguments
-        setMappedUrls([...res.data.results]);
-        setCurrentSearchQuery(params.search ?? currentSearchQuery);
-        setCurrentPage(params.page ?? currentPage);
-        setMappedUrlCount(res.data.count);
-
-        // Update the search parameters to reflect the change in state
-        searchParams.set("page", String(params.page ?? currentPage));
-        searchParams.set("search", params.search ?? currentSearchQuery);
-
-        setSearchParams(searchParams);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  React.useEffect(() => {
+    searchParams.set("page", String(currentPage));
+    searchParams.set("search", currentSearchQuery);
+    setSearchParams(searchParams);
+  }, [currentPage, currentSearchQuery]);
 
   // Handler for changing pages
   const handlePaginationChange: PaginationProps["onChange"] = (_, page) => {
-    getFilteredMappings({ search: currentSearchQuery, page });
+    setCurrentPage(page);
   };
 
   // Handler for search bar input change
@@ -88,7 +66,7 @@ const AllMappingsRoute: React.FC = () => {
   // Handler for when the search bar's clear button is clicked
   const handleSearchClear = () => {
     setSearchQuery("");
-    getFilteredMappings({ search: "" });
+    setCurrentSearchQuery("");
   };
 
   // Handler for when the `Enter` key is clicked while in the search bar
@@ -107,14 +85,29 @@ const AllMappingsRoute: React.FC = () => {
     }
 
     // Fetch the URL mappings using the `normalizedSearchQuery` filter
-    console.log(`Searching for "${normalizedSearchQuery}"...`);
-    getFilteredMappings({ search: normalizedSearchQuery });
+    setCurrentSearchQuery(normalizedSearchQuery);
+    setCurrentPage(1);
   };
 
-  // On component mount fetch the URL mappings
-  React.useEffect(() => {
-    getFilteredMappings({ page: currentPage, search: currentSearchQuery });
-  }, []);
+  // Fetch the URL mappings
+  const { data: paginatedMappedUrls } = useQuery({
+    queryFn: async () =>
+      (
+        await urlMappingsApi.getAll({
+          search: currentSearchQuery,
+          page: currentPage,
+          page_size: pageSize,
+        })
+      ).data,
+    queryKey: [
+      "mappings",
+      "search",
+      { search: currentSearchQuery, page: currentPage, page_size: pageSize },
+    ],
+  });
+
+  const { results: mappedUrls, count: mappedUrlCount } =
+    paginatedMappedUrls ?? { count: 0 };
 
   // If the `mappedUrlCount` or `pageSize` change recalculate `pageCount`
   React.useEffect(() => {
@@ -160,16 +153,14 @@ const AllMappingsRoute: React.FC = () => {
       </Box>
       <Divider orientation="horizontal" />
       <Box
-        sx={{
-          p: 2,
-          borderRadius: 2,
-          display: "grid",
-          gridTemplateColumns: { md: "1fr" },
-          gap: 2,
-        }}
+        display="flex"
+        alignItems="center"
+        p={2}
+        gap={2}
+        flexDirection="column"
       >
-        {mappedUrls.map((mappedUrl, index) => (
-          <URLMapping key={`url-mapping-${index}`} urlMapping={mappedUrl} />
+        {mappedUrls?.map((mappedUrl) => (
+          <URLMapping key={mappedUrl.urlKey} urlMapping={mappedUrl} />
         ))}
       </Box>
       <Divider orientation="horizontal" />
