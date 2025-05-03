@@ -85,7 +85,7 @@ const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
       </Typography>
       <Typography
         variant="subtitle1"
-        color={(theme) => theme.palette.text.secondary}
+        color="secondary"
         sx={{ display: "flex", justifyContent: "center" }}
       >
         <Box
