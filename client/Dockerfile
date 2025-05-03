@@ -4,7 +4,7 @@ WORKDIR /app
 
 ADD ./app /app
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 EXPOSE 3000
 
