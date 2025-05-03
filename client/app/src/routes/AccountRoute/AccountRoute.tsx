@@ -1,6 +1,5 @@
 import React from "react";
-import { TextFieldProps } from "@mui/material/TextField";
-import Box from "@mui/material/Box";
+import { TextFieldProps } from "@mui/material";
 import AccountInfoContainer from "components/AccountInfoContainer/AccountInfoContainer";
 import { isAxiosError } from "axios";
 import AccountLoginSwitcher from "components/AccountLoginSwitcher/AccountLoginSwitcher";
@@ -126,12 +125,7 @@ const AccountRoute: React.FC = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
+    <>
       {!isSuccess ? (
         <AccountLoginSwitcher
           onCreateAccountSubmit={handleCreateAccountSubmit}
@@ -202,7 +196,7 @@ const AccountRoute: React.FC = () => {
         error={isAlertErrorMessage}
         alertMessage={alertMessage}
       />
-    </Box>
+    </>
   );
 };
 

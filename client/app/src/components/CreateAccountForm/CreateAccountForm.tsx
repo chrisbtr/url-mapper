@@ -25,7 +25,7 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
       component="form"
       autoComplete="off"
       name="register-form"
-      sx={{ p: 2, px: 8, my: 2, width: "600px" }}
+      sx={{ p: 2, px: 8, my: 2, maxWidth: "600px" }}
       {...paperFormProps}
     >
       <Stack justifyContent="center" gap={2}>

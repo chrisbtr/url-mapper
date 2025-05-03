@@ -1,12 +1,10 @@
 import React from "react";
-import Tabs, { TabsProps } from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
 import LoginForm, { LoginFormProps } from "components/LoginForm/LoginForm";
 import { PaperProps } from "@mui/material/Paper";
 import CreateAccountForm, {
   CreateAccountFormProps,
 } from "components/CreateAccountForm/CreateAccountForm";
+import { Stack, Tab, Tabs, TabsProps } from "@mui/material";
 
 export type AccountLoginSwitcherProps = {
   onLoginSubmit?: PaperProps<"form">["onSubmit"];
@@ -31,13 +29,11 @@ const AccountLoginSwitcher: React.FC<AccountLoginSwitcherProps> = ({
   };
 
   return (
-    <Box>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={currentIndex} onChange={handleChange}>
-          <Tab label="Login" />
-          <Tab label="Register" />
-        </Tabs>
-      </Box>
+    <Stack alignItems="center">
+      <Tabs value={currentIndex} onChange={handleChange}>
+        <Tab label="Login" />
+        <Tab label="Register" />
+      </Tabs>
       {currentIndex === 0 ? (
         <LoginForm
           paperFormProps={{ onSubmit: onLoginSubmit }}
@@ -49,7 +45,7 @@ const AccountLoginSwitcher: React.FC<AccountLoginSwitcherProps> = ({
           {...createAccountFormProps}
         />
       )}
-    </Box>
+    </Stack>
   );
 };
 

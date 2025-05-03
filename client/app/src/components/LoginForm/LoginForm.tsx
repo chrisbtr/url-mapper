@@ -24,7 +24,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
     <Paper
       component="form"
       autoComplete="off"
-      sx={{ p: 2, px: 8, my: 2, width: "600px" }}
+      sx={{ p: 2, px: 8, my: 2, maxWidth: "600px" }}
       name="login-form"
       {...paperFormProps}
     >
