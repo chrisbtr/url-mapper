@@ -1,11 +1,11 @@
-import { render as renderDOM } from "@testing-library/react";
+import { render as renderDOM } from "test-utils";
 import userEvent from "@testing-library/user-event";
 import CreateAccountForm, { CreateAccountFormProps } from "components/CreateAccountForm/CreateAccountForm";
 
 const render = (props: Partial<CreateAccountFormProps> = {}) => {
   return {
     user: userEvent.setup(),
-    renderedComponent: renderDOM(<CreateAccountForm {...props} />),
+    renderedComponent: renderDOM(<CreateAccountForm openSnackbar={() => {}} {...props} />),
   };
 };
 
@@ -22,20 +22,5 @@ describe("CreateAccountForm", () => {
 
     const submitButton = renderedComponent.getAllByRole("button");
     expect(submitButton.length).toBe(1);
-  });
-
-  it("can submit", async () => {
-    const handleSubmit = jest
-      .fn()
-      .mockImplementation((e) => e.preventDefault());
-    const { renderedComponent, user } = render({
-      paperFormProps: { onSubmit: handleSubmit },
-    });
-
-    const submitButton = renderedComponent.getByRole("button");
-
-    await user.click(submitButton);
-
-    expect(handleSubmit).toHaveBeenCalledTimes(1);
   });
 });

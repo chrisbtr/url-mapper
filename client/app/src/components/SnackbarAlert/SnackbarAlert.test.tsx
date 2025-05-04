@@ -1,4 +1,4 @@
-import { render as renderDOM, act } from "@testing-library/react";
+import { render as renderDOM, act } from "test-utils";
 import userEvent from "@testing-library/user-event";
 import SnackbarAlert, { SnackbarAlertProps } from "components/SnackbarAlert/SnackbarAlert";
 

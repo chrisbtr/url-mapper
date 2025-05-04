@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "test-utils";
 import { BrowserRouter } from "react-router-dom";
 import URLMapping from "components/URLMapping/URLMapping";
 
@@ -12,8 +12,7 @@ describe("URLMapping", () => {
     render(
       <URLMapping
         urlMapping={{ fullURL: testValues.url, urlKey: testValues.urlKey }}
-      />,
-      { wrapper: BrowserRouter }
+      />
     );
 
     const allLinkElements = screen.getAllByRole("link");
@@ -30,8 +29,7 @@ describe("URLMapping", () => {
     render(
       <URLMapping
         urlMapping={{ fullURL: testValues.url, urlKey: testValues.urlKey }}
-      />,
-      { wrapper: BrowserRouter }
+      />
     );
 
     const allLinkElements = screen.getAllByRole("link");
@@ -51,8 +49,7 @@ describe("URLMapping", () => {
     render(
       <URLMapping
         urlMapping={{ fullURL: testValues.url, urlKey: testValues.urlKey }}
-      />,
-      { wrapper: BrowserRouter }
+      />
     );
 
     const allLinkElements = screen.getAllByRole("link");

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "test-utils";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import { faker } from "@faker-js/faker";
@@ -37,8 +37,7 @@ const renderWithRouter = (
         rootNav={rootNav ?? defaultRootNav}
         navBarOptions={navBarOptions ?? defaultNavBarOptions}
         {...props}
-      />,
-      { wrapper: BrowserRouter }
+      />
     ),
   };
 };

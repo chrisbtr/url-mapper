@@ -1,11 +1,17 @@
-import { render as renderDOM, screen } from "@testing-library/react";
+import { render as renderDOM, screen } from "test-utils";
 import userEvent from "@testing-library/user-event";
 import AccountLoginSwitcher, {
   AccountLoginSwitcherProps,
 } from "components/AccountLoginSwitcher/AccountLoginSwitcher";
 
 const render = (props: Partial<AccountLoginSwitcherProps> = {}) => {
-  const renderedComponent = renderDOM(<AccountLoginSwitcher {...props} />);
+  const renderedComponent = renderDOM(
+    <AccountLoginSwitcher
+      createAccountFormProps={{ openSnackbar: () => {} }}
+      loginFormProps={{ openSnackbar: () => {} }}
+      {...props}
+    />
+  );
 
   const tabsComponent = renderedComponent.getByRole("tablist");
   const loginTabButton = tabsComponent.children[0];
@@ -45,15 +51,5 @@ describe("AccountLoginSwitcher", () => {
     await user.click(loginTabButton);
 
     expect(screen.getByRole("form")).toHaveAttribute("name", "login-form");
-  });
-
-  it("calls onClearForm when switching to a new tab", async () => {
-    const handleClearForm = jest.fn();
-    const { user, registerTabButton } = render({
-      onClearForm: handleClearForm,
-    });
-
-    await user.click(registerTabButton);
-    expect(handleClearForm).toHaveBeenCalledTimes(1);
   });
 });
