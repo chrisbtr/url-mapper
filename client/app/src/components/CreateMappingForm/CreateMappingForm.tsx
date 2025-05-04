@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Typography,
-  Box,
   Divider,
   TextField,
   Paper,
@@ -95,22 +94,19 @@ const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
         createMapping({ fullURL: url, urlKey });
       }}
     >
-      <Typography
-        component="h1"
-        variant="h5"
-        noWrap
-        sx={{
-          my: 1,
-          fontWeight: 500,
-          textAlign: "center",
-        }}
-      >
-        Create A URL Mapping
-      </Typography>
-      <Typography variant="body1" sx={{ mt: 1, mb: 2 }}>
-        Enter your URL and a key to create a shortened version
-      </Typography>
-      <Box sx={{ mb: 2, mx: 8 }}>
+      <Stack gap={2}>
+        <Typography
+          component="h1"
+          variant="h5"
+          noWrap
+          fontWeight={500}
+          textAlign="center"
+        >
+          Create A URL Mapping
+        </Typography>
+        <Typography variant="body1">
+          Enter your URL and a key to create a shortened version
+        </Typography>
         <TextField
           required
           fullWidth
@@ -132,8 +128,6 @@ const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
             </>
           }
         />
-      </Box>
-      <Box sx={{ mb: 2, mx: 8 }}>
         <TextField
           required
           fullWidth
@@ -156,32 +150,34 @@ const CreateMappingForm: React.FC<CreateMappingFormProps> = ({
             </>
           }
         />
-      </Box>
-      <Button
-        disabled={createMappingIsLoading}
-        size="small"
-        type="submit"
-        sx={{ mb: 1 }}
-      >
-        Create Mapping
-      </Button>
-      <Divider sx={{ mb: 1 }} />
-      <Typography variant="subtitle2">Your URL Mapping:</Typography>
-      <Stack direction="row" justifyContent="center" gap={1}>
-        <Typography
-          component="div"
-          data-testid={`url-key${urlKeyIsError ? "-error" : ""}`}
-          color={urlKeyIsError ? "error" : undefined}
+        <Button disabled={createMappingIsLoading} size="small" type="submit">
+          Create Mapping
+        </Button>
+
+        <Divider />
+        <Typography variant="subtitle2">Your URL Mapping:</Typography>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          flexWrap="wrap"
+          gap={1}
+          overflow="auto"
         >
-          {`${window.location.origin}/m/${urlKey}`}
-        </Typography>
-        <ArrowForwardIcon />
-        <Typography
-          data-testid={`full-url${urlIsError ? "-error" : ""}`}
-          color={urlIsError ? "error" : undefined}
-        >
-          {url}
-        </Typography>
+          <Typography
+            component="div"
+            data-testid={`url-key${urlKeyIsError ? "-error" : ""}`}
+            color={urlKeyIsError ? "error" : undefined}
+          >
+            {`${window.location.origin}/m/${urlKey}`}
+          </Typography>
+          <ArrowForwardIcon />
+          <Typography
+            data-testid={`full-url${urlIsError ? "-error" : ""}`}
+            color={urlIsError ? "error" : undefined}
+          >
+            {url}
+          </Typography>
+        </Stack>
       </Stack>
     </Paper>
   );
