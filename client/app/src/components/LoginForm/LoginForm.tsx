@@ -1,32 +1,62 @@
 import React from "react";
-import {
-  Stack,
-  Typography,
-  TextField,
-  TextFieldProps,
-  Button,
-  Paper,
-  PaperProps,
-} from "@mui/material";
+import { Stack, Typography, TextField, Button, Paper } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import accountApi from "api/account";
+import { isAxiosError } from "axios";
 
 export type LoginFormProps = {
-  usernameTextFieldProps?: TextFieldProps;
-  passwordTextFieldProps?: TextFieldProps;
-  paperFormProps?: PaperProps<"form">;
+  openSnackbar: (
+    message: string,
+    options?: {
+      isError?: boolean;
+    }
+  ) => void;
 };
 
-const LoginForm: React.FC<LoginFormProps> = ({
-  usernameTextFieldProps,
-  passwordTextFieldProps,
-  paperFormProps,
-}) => {
+const LoginForm: React.FC<LoginFormProps> = ({ openSnackbar }) => {
+  const [usernameInput, setUsernameInput] = React.useState("");
+  const [passwordInput, setPasswordInput] = React.useState("");
+
+  const queryClient = useQueryClient();
+
+  const { mutate: login, isLoading: loginIsLoading } = useMutation({
+    mutationFn: () =>
+      accountApi.login({ username: usernameInput, password: passwordInput }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["account", "user"]);
+    },
+    onError: (err) => {
+      setPasswordInput("");
+      if (isAxiosError(err) && err.response?.status === 400) {
+        openSnackbar("Error: Invalid information.", { isError: true });
+      } else {
+        openSnackbar("Unknown error.", { isError: true });
+      }
+    },
+  });
+
+  const handleUsernameInputChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = React.useCallback((event) => {
+    setUsernameInput(event.target.value);
+  }, []);
+
+  const handlePasswordInputChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = React.useCallback((event) => {
+    setPasswordInput(event.target.value);
+  }, []);
+
   return (
     <Paper
       component="form"
       autoComplete="off"
       sx={{ p: 2, px: 8, my: 2, maxWidth: "600px" }}
       name="login-form"
-      {...paperFormProps}
+      onSubmit={(event) => {
+        event.preventDefault();
+        login();
+      }}
     >
       <Stack justifyContent="center" gap={2}>
         <Typography
@@ -44,27 +74,21 @@ const LoginForm: React.FC<LoginFormProps> = ({
         <TextField
           required
           fullWidth
-          id="username-input"
           size="small"
           label="Username"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...usernameTextFieldProps}
+          value={usernameInput}
+          onChange={handleUsernameInputChange}
         />
         <TextField
           required
           fullWidth
-          id="password-input"
           size="small"
           type="password"
           label="Password"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...passwordTextFieldProps}
+          value={passwordInput}
+          onChange={handlePasswordInputChange}
         />
-        <Button size="small" type="submit">
+        <Button disabled={loginIsLoading} size="small" type="submit">
           Login
         </Button>
       </Stack>

@@ -1,32 +1,27 @@
 import React from "react";
 import LoginForm, { LoginFormProps } from "components/LoginForm/LoginForm";
-import { PaperProps } from "@mui/material/Paper";
 import CreateAccountForm, {
   CreateAccountFormProps,
 } from "components/CreateAccountForm/CreateAccountForm";
-import { Stack, Tab, Tabs, TabsProps } from "@mui/material";
+import { Stack, Tab, Tabs } from "@mui/material";
 
 export type AccountLoginSwitcherProps = {
-  onLoginSubmit?: PaperProps<"form">["onSubmit"];
-  onCreateAccountSubmit?: PaperProps<"form">["onSubmit"];
-  onClearForm?: () => void;
-  loginFormProps?: LoginFormProps;
-  createAccountFormProps?: CreateAccountFormProps;
+  loginFormProps: LoginFormProps;
+  createAccountFormProps: CreateAccountFormProps;
 };
 
 const AccountLoginSwitcher: React.FC<AccountLoginSwitcherProps> = ({
-  onLoginSubmit,
-  onCreateAccountSubmit,
-  onClearForm,
   loginFormProps,
   createAccountFormProps,
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
-  const handleChange: TabsProps["onChange"] = (event, newValue) => {
-    setCurrentIndex(newValue);
-    onClearForm?.();
-  };
+  const handleChange = React.useCallback(
+    (_event: unknown, newValue: number) => {
+      setCurrentIndex(newValue);
+    },
+    []
+  );
 
   return (
     <Stack alignItems="center">
@@ -35,15 +30,9 @@ const AccountLoginSwitcher: React.FC<AccountLoginSwitcherProps> = ({
         <Tab label="Register" />
       </Tabs>
       {currentIndex === 0 ? (
-        <LoginForm
-          paperFormProps={{ onSubmit: onLoginSubmit }}
-          {...loginFormProps}
-        />
+        <LoginForm {...loginFormProps} />
       ) : (
-        <CreateAccountForm
-          paperFormProps={{ onSubmit: onCreateAccountSubmit }}
-          {...createAccountFormProps}
-        />
+        <CreateAccountForm {...createAccountFormProps} />
       )}
     </Stack>
   );
